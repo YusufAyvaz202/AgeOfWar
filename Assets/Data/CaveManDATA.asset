@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d1227cf185484daf16f59f5fe18d7b, type: 3}
   m_Name: CaveManDATA
   m_EditorClassIdentifier: 
-  _fighterType: 0
+  FighterType: 0
   AttackSpeed: 2
-  MoveSpeed: 2
+  MoveSpeed: 1
   Health: 6
   Damage: 2

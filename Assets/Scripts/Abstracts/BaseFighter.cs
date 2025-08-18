@@ -1,4 +1,5 @@
-﻿using Fighter;
+﻿using System;
+using Fighter;
 using Interfaces;
 using Misc;
 using ScriptableObjects;
@@ -46,6 +47,10 @@ namespace Abstracts
             _navMeshAgent.speed = _moveSpeed;
             
             ChangeFighterState(FighterState.Move);
+        }
+
+        private void Start()
+        {
             _fighterAnimationController.PlayMoveAnimation();
         }
 
@@ -95,6 +100,11 @@ namespace Abstracts
         private void ChangeFighterState(FighterState fighterState)
         {
             _fighterState = fighterState;
+        }
+
+        public void SetTargetDestination(Transform target)
+        {
+            _targetDestination = target;
         }
 
         #endregion
