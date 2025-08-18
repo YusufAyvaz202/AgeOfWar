@@ -4,4 +4,12 @@
     {
         CaveMan
     }
+
+    public enum FighterState
+    {
+        Waiting,
+        Move,
+        Attacking,
+        Dead,
+    }
 }

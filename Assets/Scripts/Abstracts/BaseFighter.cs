@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using Fighter;
+using Interfaces;
 using Misc;
 using ScriptableObjects;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace Abstracts
     {
         [Header("References")] 
         [SerializeField] private FighterDataSO _fighterDataSo;
+        private FighterAnimationController _fighterAnimationController;
+        private FighterHealthUI _fighterHealthUI;
 
         [Header("Settings")]
         private FighterType _fighterType;
@@ -19,43 +22,81 @@ namespace Abstracts
         private float _damage;
 
         [Header("AI Settings")]
+        public Transform _targetDestination;
+        private FighterState _fighterState;
         private NavMeshAgent _navMeshAgent;
-        private Transform _targetDestination;
 
         #region Unity Methods
 
         private void Awake()
         {
-            _fighterType = _fighterDataSo._fighterType;
+            _fighterType = _fighterDataSo.FighterType;
             _attackSpeed = _fighterDataSo.AttackSpeed;
             _moveSpeed = _fighterDataSo.MoveSpeed;
             _health = _fighterDataSo.Health;
             _damage = _fighterDataSo.Damage;
 
+            _fighterAnimationController = GetComponent<FighterAnimationController>();
+            _fighterHealthUI = GetComponentInChildren<FighterHealthUI>();
+            _fighterHealthUI.UpdateMaxHealth(_health);
+            
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshAgent.updateRotation = false;
             _navMeshAgent.updateUpAxis = false;
             _navMeshAgent.speed = _moveSpeed;
+            
+            ChangeFighterState(FighterState.Move);
+            _fighterAnimationController.PlayMoveAnimation();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Move();
         }
 
         #endregion
 
+        #region AI Methods
+
         public abstract void Attack();
 
         public void TakeDamage(float damage)
         {
             _health -= damage;
+            _fighterHealthUI.UpdateHealthBar(_health);
         }
 
         private void Move()
         {
-            if (_targetDestination == null) return;
+            if (_targetDestination == null || _fighterState != FighterState.Move) return;
             _navMeshAgent.SetDestination(_targetDestination.position);
+
+            if (Vector2.Distance(transform.position, _targetDestination.position) <= _navMeshAgent.stoppingDistance)
+            {
+                if (_fighterState == FighterState.Attacking) return;
+                
+                ChangeFighterState(FighterState.Attacking);  
+                _fighterAnimationController.PlayAttackAnimation();
+            }
         }
+
+        private void FindNearestTarget()
+        {
+            if (_fighterState == FighterState.Move)
+            {
+                // TODO: Get nearest fighter from Enemy Spawn Manager.
+            }
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private void ChangeFighterState(FighterState fighterState)
+        {
+            _fighterState = fighterState;
+        }
+
+        #endregion
     }
 }

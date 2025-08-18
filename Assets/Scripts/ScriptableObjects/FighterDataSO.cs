@@ -6,7 +6,7 @@ namespace ScriptableObjects
     [CreateAssetMenu(fileName = "EnemyDataSO", menuName = "ScriptableObject/Enemy")]
     public class FighterDataSO: ScriptableObject
     {
-        public FighterType _fighterType;
+        public FighterType FighterType;
         public float AttackSpeed;
         public float MoveSpeed;
         public float Health;

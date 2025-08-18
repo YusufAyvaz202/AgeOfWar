@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Fighter
+  - EnemyCastle
+  - PlayerCastle
   layers:
   - Default
   - TransparentFX
@@ -38,6 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 4255202819
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Castle
+    uniqueID: 914452975
+    locked: 0
+  - name: Fighter
+    uniqueID: 2034123555
     locked: 0

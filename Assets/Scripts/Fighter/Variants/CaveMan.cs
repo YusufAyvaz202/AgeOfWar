@@ -1,6 +1,6 @@
 ﻿using Abstracts;
 
-namespace Enemy
+namespace Fighter.Variants
 {
     public class CaveMan : BaseFighter
     {
