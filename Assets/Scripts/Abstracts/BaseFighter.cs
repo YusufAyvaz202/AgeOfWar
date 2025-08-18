@@ -1,5 +1,4 @@
-﻿using System;
-using Fighter;
+﻿using Fighter;
 using Interfaces;
 using Misc;
 using ScriptableObjects;
@@ -63,7 +62,18 @@ namespace Abstracts
 
         #region AI Methods
 
-        public abstract void Attack();
+        public void Attack()
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 1f);
+            if (hit.collider != null)
+            {
+                if (hit.collider.TryGetComponent(out IAttackable attackable))
+                {
+                    attackable.TakeDamage(_damage);
+                }
+                Debug.Log(hit.collider.gameObject.name);
+            }
+        }
 
         public void TakeDamage(float damage)
         {
@@ -79,9 +89,9 @@ namespace Abstracts
             if (Vector2.Distance(transform.position, _targetDestination.position) <= _navMeshAgent.stoppingDistance)
             {
                 if (_fighterState == FighterState.Attacking) return;
-                
                 ChangeFighterState(FighterState.Attacking);  
                 _fighterAnimationController.PlayAttackAnimation();
+                Attack();
             }
         }
 
