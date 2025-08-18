@@ -7,7 +7,7 @@ namespace ScriptableObjects
     public class FighterDataSO: ScriptableObject
     {
         public FighterType FighterType;
-        public float AttackSpeed;
+        public float AttackRange;
         public float MoveSpeed;
         public float Health;
         public float Damage;

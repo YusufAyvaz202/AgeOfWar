@@ -126,4 +126,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.5833333
+    functionName: Attack
+    data: 
+    objectReferenceParameter: {fileID: 7231007288594450542, guid: 930dfe4864286664fb2d04c48a67504a, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

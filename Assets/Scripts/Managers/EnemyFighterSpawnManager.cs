@@ -10,7 +10,7 @@ namespace Managers
         [SerializeField] private BaseFighter _baseFighterPrefab;
         [SerializeField] private Transform _target;
         [SerializeField] private Transform _spawnPosition;
-        private bool _isSpawning = true;
+        [SerializeField] private bool _isSpawning = true;
         
         private void Start()
         {

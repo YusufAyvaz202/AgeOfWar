@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CaveManDATA
   m_EditorClassIdentifier: 
   FighterType: 0
-  AttackSpeed: 2
+  AttackRange: 1
   MoveSpeed: 1
   Health: 6
   Damage: 2

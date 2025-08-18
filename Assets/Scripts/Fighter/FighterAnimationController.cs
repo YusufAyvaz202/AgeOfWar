@@ -12,7 +12,7 @@ namespace Fighter
 
         private void Awake()
         {
-            _animator = GetComponentInChildren<Animator>();
+            _animator = GetComponent<Animator>();
         }
 
         #endregion

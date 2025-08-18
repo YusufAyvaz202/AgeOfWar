@@ -4,9 +4,9 @@
     {
         public struct FighterAnimations
         {
-            public static string FIGHTER_MOVE = "isMoving";
-            public static string FIGHTER_ATTACK = "isAttacking";
-            public static string FIGHTER_DEAD = "isDead";
+            public const string FIGHTER_MOVE = "isMoving";
+            public const string FIGHTER_ATTACK = "isAttacking";
+            public const string FIGHTER_DEAD = "isDead";
         }
     }
 }

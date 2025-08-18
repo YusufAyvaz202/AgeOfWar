@@ -2,6 +2,7 @@
 using Interfaces;
 using Misc;
 using ScriptableObjects;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,11 +13,11 @@ namespace Abstracts
         [Header("References")] 
         [SerializeField] private FighterDataSO _fighterDataSo;
         private FighterAnimationController _fighterAnimationController;
-        private FighterHealthUI _fighterHealthUI;
+        private HealthUI _healthUI;
 
         [Header("Settings")]
         private FighterType _fighterType;
-        private float _attackSpeed;
+        private float _attackRange;
         private float _moveSpeed;
         private float _health;
         private float _damage;
@@ -25,32 +26,19 @@ namespace Abstracts
         public Transform _targetDestination;
         private FighterState _fighterState;
         private NavMeshAgent _navMeshAgent;
+        [SerializeField] private LayerMask _layerMask;
 
         #region Unity Methods
 
         private void Awake()
         {
-            _fighterType = _fighterDataSo.FighterType;
-            _attackSpeed = _fighterDataSo.AttackSpeed;
-            _moveSpeed = _fighterDataSo.MoveSpeed;
-            _health = _fighterDataSo.Health;
-            _damage = _fighterDataSo.Damage;
-
-            _fighterAnimationController = GetComponent<FighterAnimationController>();
-            _fighterHealthUI = GetComponentInChildren<FighterHealthUI>();
-            _fighterHealthUI.UpdateMaxHealth(_health);
-            
-            _navMeshAgent = GetComponent<NavMeshAgent>();
-            _navMeshAgent.updateRotation = false;
-            _navMeshAgent.updateUpAxis = false;
-            _navMeshAgent.speed = _moveSpeed;
-            
-            ChangeFighterState(FighterState.Move);
+            Initialize();
         }
 
         private void Start()
         {
             _fighterAnimationController.PlayMoveAnimation();
+            FindNearestTarget();
         }
 
         private void FixedUpdate()
@@ -64,34 +52,36 @@ namespace Abstracts
 
         public void Attack()
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 1f);
-            if (hit.collider != null)
+            if (_fighterState == FighterState.Attacking)
             {
-                if (hit.collider.TryGetComponent(out IAttackable attackable))
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _attackRange, _layerMask);
+                if (hit.collider != null)
                 {
-                    attackable.TakeDamage(_damage);
+                    if (hit.collider.TryGetComponent(out IAttackable attackable))
+                    {
+                        attackable.TakeDamage(_damage);
+                    }
+                    Debug.Log(hit.collider.gameObject.name);
                 }
-                Debug.Log(hit.collider.gameObject.name);
             }
         }
 
         public void TakeDamage(float damage)
         {
             _health -= damage;
-            _fighterHealthUI.UpdateHealthBar(_health);
+            _healthUI.UpdateHealthBar(_health);
         }
 
         private void Move()
         {
             if (_targetDestination == null || _fighterState != FighterState.Move) return;
+            FindNearestTarget();
             _navMeshAgent.SetDestination(_targetDestination.position);
 
             if (Vector2.Distance(transform.position, _targetDestination.position) <= _navMeshAgent.stoppingDistance)
             {
-                if (_fighterState == FighterState.Attacking) return;
-                ChangeFighterState(FighterState.Attacking);  
                 _fighterAnimationController.PlayAttackAnimation();
-                Attack();
+                ChangeFighterState(FighterState.Attacking);
             }
         }
 
@@ -100,6 +90,11 @@ namespace Abstracts
             if (_fighterState == FighterState.Move)
             {
                 // TODO: Get nearest fighter from Enemy Spawn Manager.
+                RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f ,transform.right, _attackRange, _layerMask);
+                if (hit.collider != null)
+                {
+                    _targetDestination = hit.collider.transform;
+                }
             }
         }
 
@@ -115,6 +110,44 @@ namespace Abstracts
         public void SetTargetDestination(Transform target)
         {
             _targetDestination = target;
+        }
+
+        private void Initialize()
+        {
+            _fighterType = _fighterDataSo.FighterType;
+            _attackRange = _fighterDataSo.AttackRange;
+            _moveSpeed = _fighterDataSo.MoveSpeed;
+            _health = _fighterDataSo.Health;
+            _damage = _fighterDataSo.Damage;
+
+            _fighterAnimationController = GetComponentInChildren<FighterAnimationController>();
+            _healthUI = GetComponentInChildren<HealthUI>();
+            _healthUI.UpdateMaxHealth(_health);
+            
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _navMeshAgent.updateRotation = false;
+            _navMeshAgent.updateUpAxis = false;
+            _navMeshAgent.speed = _moveSpeed;
+            
+            ChangeFighterState(FighterState.Move);
+        }
+        
+        private void OnDrawGizmos()
+        {
+            Vector3 origin = transform.position;
+            Vector3 direction = transform.right;
+            float distance = _attackRange;
+
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(origin, origin + direction * distance);
+
+            if (hit.collider != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(hit.point, 0.05f); 
+            }
         }
 
         #endregion

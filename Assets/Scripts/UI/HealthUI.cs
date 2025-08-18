@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Fighter
+namespace UI
 {
-    public class FighterHealthUI : MonoBehaviour
+    public class HealthUI : MonoBehaviour
     {
         [Header("References")] 
         [SerializeField] private Image _healthBarImage;
