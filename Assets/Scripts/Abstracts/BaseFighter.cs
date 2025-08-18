@@ -37,8 +37,7 @@ namespace Abstracts
 
         private void Start()
         {
-            _fighterAnimationController.PlayMoveAnimation();
-            FindNearestTarget();
+            ChangeFighterState(FighterState.Move);
         }
 
         private void FixedUpdate()
@@ -70,6 +69,12 @@ namespace Abstracts
         {
             _health -= damage;
             _healthUI.UpdateHealthBar(_health);
+
+            if (_health <= 0)
+            {
+                // TODO : Destroy or implement Object pooling
+                ChangeFighterState(FighterState.Dead);
+            }
         }
 
         private void Move()
@@ -80,21 +85,16 @@ namespace Abstracts
 
             if (Vector2.Distance(transform.position, _targetDestination.position) <= _navMeshAgent.stoppingDistance)
             {
-                _fighterAnimationController.PlayAttackAnimation();
                 ChangeFighterState(FighterState.Attacking);
             }
         }
 
         private void FindNearestTarget()
         {
-            if (_fighterState == FighterState.Move)
+            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f ,transform.right, _attackRange, _layerMask);
+            if (hit.collider != null)
             {
-                // TODO: Get nearest fighter from Enemy Spawn Manager.
-                RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f ,transform.right, _attackRange, _layerMask);
-                if (hit.collider != null)
-                {
-                    _targetDestination = hit.collider.transform;
-                }
+                _targetDestination = hit.collider.transform;
             }
         }
 
@@ -105,6 +105,7 @@ namespace Abstracts
         private void ChangeFighterState(FighterState fighterState)
         {
             _fighterState = fighterState;
+            _fighterAnimationController.SetAnimationState(_fighterState);
         }
 
         public void SetTargetDestination(Transform target)
@@ -128,8 +129,6 @@ namespace Abstracts
             _navMeshAgent.updateRotation = false;
             _navMeshAgent.updateUpAxis = false;
             _navMeshAgent.speed = _moveSpeed;
-            
-            ChangeFighterState(FighterState.Move);
         }
         
         private void OnDrawGizmos()
