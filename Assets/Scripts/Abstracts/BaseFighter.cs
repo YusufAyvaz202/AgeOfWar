@@ -29,7 +29,7 @@ namespace Abstracts
         private NavMeshAgent _navMeshAgent;
         public Transform _targetDestination;
 
-        [Header("Game Settings")] 
+        [Header("Game Settings")]
         [SerializeField] private bool _isPlayerFighter;
         protected bool _isPlaying = true;
 
@@ -69,7 +69,7 @@ namespace Abstracts
 
         public void TakeDamage(float damage)
         {
-            if(!_isPlaying) return;
+            if (!_isPlaying) return;
             _health -= damage;
             _healthUI.UpdateHealthBar(_health);
 
@@ -77,7 +77,7 @@ namespace Abstracts
             {
                 ChangeFighterState(FighterState.Dead);
                 gameObject.layer = LayerMask.NameToLayer(Const.Layers.DEFAULT);
-                
+
                 // TODO: Test all circumstances where this is called.
                 if (!_isPlayerFighter)
                 {
@@ -98,10 +98,10 @@ namespace Abstracts
 
         private void Move()
         {
-            if(!_isPlaying) return;
-            
+            if (!_isPlaying) return;
+
             FindNearestTarget();
-            
+
             if (_targetDestination == null || _fighterState != FighterState.Move) return;
             _navMeshAgent.SetDestination(_targetDestination.position);
 
@@ -113,7 +113,7 @@ namespace Abstracts
 
         private void FindNearestTarget()
         {
-            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f ,transform.right, 100f, _layerMask);
+            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f, transform.right, 100f, _layerMask);
             if (hit.collider != null && hit.collider.transform != _targetDestination)
             {
                 // If the hit collider is not the current target, set it as the new target
@@ -159,24 +159,35 @@ namespace Abstracts
             _fighterAnimationController = GetComponentInChildren<FighterAnimationController>();
             _healthUI = GetComponentInChildren<HealthUI>();
             _healthUI.UpdateMaxHealth(_health);
-            
+
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshAgent.updateRotation = false;
             _navMeshAgent.updateUpAxis = false;
             _navMeshAgent.speed = _moveSpeed;
             _navMeshAgent.stoppingDistance = _attackRange;
         }
-        
+
         private void OnGameStateChanged(GameState gameState)
         {
             _isPlaying = gameState == GameState.Playing;
+
+            if (gameState == GameState.Playing)
+            {
+                _isPlaying = true;
+                _navMeshAgent.isStopped = false;
+            }
+            else
+            {
+                _isPlaying = false;
+                _navMeshAgent.isStopped = true;
+            }
         }
 
         public FighterType GetFighterType()
         {
             return _fighterType;
         }
-        
+
         private void OnDrawGizmos()
         {
             Vector3 origin = transform.position;
@@ -191,7 +202,7 @@ namespace Abstracts
             if (hit.collider != null)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawSphere(hit.point, 0.05f); 
+                Gizmos.DrawSphere(hit.point, 0.05f);
             }
         }
 
