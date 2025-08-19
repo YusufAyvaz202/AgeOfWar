@@ -49,6 +49,7 @@ namespace Abstracts
 
         #region AI Methods
 
+        // This method is called from the animation event in the fighter's attack animation on FighterAnimationEventController.cs.
         public void Attack()
         {
             if (_fighterState == FighterState.Attacking)
@@ -72,15 +73,16 @@ namespace Abstracts
 
             if (_health <= 0)
             {
-                // TODO : Destroy or implement Object pooling
+                // TODO : Implement Object pooling
+                Destroy(gameObject);
                 ChangeFighterState(FighterState.Dead);
             }
         }
 
         private void Move()
         {
-            if (_targetDestination == null || _fighterState != FighterState.Move) return;
             FindNearestTarget();
+            if (_targetDestination == null || _fighterState != FighterState.Move) return;
             _navMeshAgent.SetDestination(_targetDestination.position);
 
             if (Vector2.Distance(transform.position, _targetDestination.position) <= _navMeshAgent.stoppingDistance)
@@ -91,10 +93,15 @@ namespace Abstracts
 
         private void FindNearestTarget()
         {
-            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f ,transform.right, _attackRange, _layerMask);
-            if (hit.collider != null)
+            RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(0.1f, 1f), 0f ,transform.right, 100f, _layerMask);
+            if (hit.collider != null && hit.collider.transform != _targetDestination)
             {
-                _targetDestination = hit.collider.transform;
+                // If the hit collider is not the current target, set it as the new target
+                if (hit.collider.TryGetComponent(out IAttackable attackable) && attackable != null)
+                {
+                    _targetDestination = hit.collider.transform;
+                    ChangeFighterState(FighterState.Move);
+                }
             }
         }
 

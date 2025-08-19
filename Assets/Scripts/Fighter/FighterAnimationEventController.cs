@@ -16,6 +16,7 @@ namespace Fighter
 
         #endregion
         
+        // This method is called from the animation event in the fighter's attack animation.
         public void Attack()
         {
             _baseFighter.Attack();
