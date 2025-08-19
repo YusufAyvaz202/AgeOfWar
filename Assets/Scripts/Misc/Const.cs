@@ -8,5 +8,10 @@
             public const string FIGHTER_ATTACK = "isAttacking";
             public const string FIGHTER_DEAD = "isDead";
         }
+        
+        public struct FighterCosts
+        {
+            public const int CAVEMAN_COST = 3;
+        }
     }
 }
