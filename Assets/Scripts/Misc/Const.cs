@@ -14,5 +14,12 @@
             public const int CAVEMAN_COST = 3;
             public const int NINJA_COST = 5;
         }
+        
+        public struct Layers
+        {
+            public const string ENEMY_FIGHTER = "EnemyFighter";
+            public const string PLAYER_FIGHTER = "PlayerFighter";
+            public const string DEFAULT = "Default";
+        }
     }
 }

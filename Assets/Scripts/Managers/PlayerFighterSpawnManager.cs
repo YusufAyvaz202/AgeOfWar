@@ -1,6 +1,7 @@
 ﻿using Abstracts;
 using Economy;
 using Misc;
+using ObjectPooling;
 using UnityEngine;
 
 namespace Managers
@@ -11,12 +12,13 @@ namespace Managers
         public static PlayerFighterSpawnManager Instance;
         
         [Header("References")] 
-        [SerializeField] private BaseFighter _caveManPrefab;
-        [SerializeField] private BaseFighter _ninjaPrefab;
+        [SerializeField] private BaseFighter[] _baseFighterPrefabs;
         [SerializeField] private Transform _target;
         [SerializeField] private Transform _spawnPosition;
+        [SerializeField] private Transform _spawnParent;
         
         [Header("Settings")]
+        private ObjectPool _fighterPool;
         private bool _isPlaying;
 
         #region Unity Methods
@@ -33,14 +35,21 @@ namespace Managers
             }
         }
 
+        private void Start()
+        {
+            _fighterPool = new ObjectPool(_baseFighterPrefabs, 5, _spawnParent);
+        }
+
         private void OnEnable()
         {
             EventManager.OnGameStateChanged += OnGameStateChanged;
+            EventManager.OnPlayerFighterDead += OnEnemyFighterDead;
         }
         
         private void OnDisable()
         {
             EventManager.OnGameStateChanged -= OnGameStateChanged;
+            EventManager.OnPlayerFighterDead -= OnEnemyFighterDead;
         }
 
         #endregion
@@ -51,7 +60,7 @@ namespace Managers
             
             if (EconomyManager.Instance.CanSpawn(Const.FighterCosts.CAVEMAN_COST))
             {
-                BaseFighter baseFighter = Instantiate(_caveManPrefab);
+                BaseFighter baseFighter = _fighterPool.GetFighter(FighterType.CaveMan);
                 baseFighter.transform.position = _spawnPosition.position;
                 baseFighter.SetTargetDestination(_target);
             }
@@ -62,7 +71,7 @@ namespace Managers
             if (!_isPlaying) return;
             if (EconomyManager.Instance.CanSpawn(Const.FighterCosts.NINJA_COST))
             {
-                BaseFighter baseFighter = Instantiate(_ninjaPrefab);
+                BaseFighter baseFighter = _fighterPool.GetFighter(FighterType.Ninja);
                 baseFighter.transform.position = _spawnPosition.position;
                 baseFighter.SetTargetDestination(_target);
             }
@@ -73,6 +82,11 @@ namespace Managers
         private void OnGameStateChanged(GameState gameState)
         {
             _isPlaying = gameState == GameState.Playing;
+        }
+        
+        private void OnEnemyFighterDead(BaseFighter baseFighter)
+        {
+            _fighterPool.ReturnFighterToPool(baseFighter);
         }
 
         #endregion

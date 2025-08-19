@@ -17,7 +17,7 @@ namespace Abstracts
         private HealthUI _healthUI;
 
         [Header("Settings")]
-        private FighterType _fighterType;
+        [SerializeField] private FighterType _fighterType;
         private float _moveSpeed;
         private float _health;
         protected float _attackRange;
@@ -30,6 +30,7 @@ namespace Abstracts
         public Transform _targetDestination;
 
         [Header("Game Settings")] 
+        [SerializeField] private bool _isPlayerFighter;
         protected bool _isPlaying = true;
 
         #region Unity Methods
@@ -61,7 +62,7 @@ namespace Abstracts
 
         #endregion
 
-        #region AI Methods
+        #region Base Methods
 
         /// <summary> This method is called from the animation event in the fighter's attack animation on FighterAnimationEventController.cs. /// </summary>
         public abstract void Attack();
@@ -74,12 +75,26 @@ namespace Abstracts
 
             if (_health <= 0)
             {
-                // TODO : Implement Object pooling
                 ChangeFighterState(FighterState.Dead);
-                gameObject.layer = LayerMask.NameToLayer("Default");
-                Destroy(gameObject, 1f);
+                gameObject.layer = LayerMask.NameToLayer(Const.Layers.DEFAULT);
+                
+                // TODO: Test all circumstances where this is called.
+                if (!_isPlayerFighter)
+                {
+                    ResetYourself(Const.Layers.ENEMY_FIGHTER);
+                    EventManager.OnEnemyFighterDead?.Invoke(this);
+                }
+                else
+                {
+                    ResetYourself(Const.Layers.PLAYER_FIGHTER);
+                    EventManager.OnPlayerFighterDead?.Invoke(this);
+                }
             }
         }
+
+        #endregion
+
+        #region AI Methods
 
         private void Move()
         {
@@ -125,9 +140,17 @@ namespace Abstracts
             _targetDestination = target;
         }
 
+        private void ResetYourself(string LayerNAME)
+        {
+            _fighterState = FighterState.Move;
+            _navMeshAgent.ResetPath();
+            _health = _fighterDataSo.Health;
+            _healthUI.UpdateHealthBar(_health);
+            gameObject.layer = LayerMask.NameToLayer(LayerNAME);
+        }
+
         private void Initialize()
         {
-            _fighterType = _fighterDataSo.FighterType;
             _attackRange = _fighterDataSo.AttackRange;
             _moveSpeed = _fighterDataSo.MoveSpeed;
             _health = _fighterDataSo.Health;
@@ -147,6 +170,11 @@ namespace Abstracts
         private void OnGameStateChanged(GameState gameState)
         {
             _isPlaying = gameState == GameState.Playing;
+        }
+
+        public FighterType GetFighterType()
+        {
+            return _fighterType;
         }
         
         private void OnDrawGizmos()

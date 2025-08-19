@@ -225,6 +225,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _targetDestination: {fileID: 0}
+  _isPlayerFighter: 1
 --- !u!70 &5784208554855153985
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

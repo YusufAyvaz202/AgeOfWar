@@ -106,10 +106,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fighterDataSo: {fileID: 11400000, guid: 13e8efc7ac0242b409c2f430956d92fd, type: 2}
+  _fighterType: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
   _targetDestination: {fileID: 0}
+  _isPlayerFighter: 1
 --- !u!1 &1209182293839304586
 GameObject:
   m_ObjectHideFlags: 0

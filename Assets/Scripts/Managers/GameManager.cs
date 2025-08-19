@@ -26,16 +26,9 @@ namespace Managers
             
         }
 
-        [ContextMenu("Dene Game State")]
-        public void dene()
+        private void Start()
         {
             SetGameState(GameState.Playing);
-        }
-        
-        [ContextMenu("Dene Game State 2")]
-        public void dene2()
-        {
-            SetGameState(GameState.Waiting);
         }
 
         #endregion

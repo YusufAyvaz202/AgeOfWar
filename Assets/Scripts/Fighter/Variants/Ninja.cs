@@ -20,7 +20,6 @@ namespace Fighter.Variants
                     {
                         attackable.TakeDamage(_damage);
                     }
-                    Debug.Log(hit.collider.gameObject.name);
                 }
             }
         }
