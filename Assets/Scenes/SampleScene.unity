@@ -1824,6 +1824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _caveManSpawnButton: {fileID: 477267135}
+  _ninjaSpawnButton: {fileID: 913833873}
 --- !u!1 &1097126857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1868,7 +1869,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee4c6d1250f4de1891b018045973859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseFighterPrefab: {fileID: 544307509177008620, guid: 62f12431d2203b24cb5aa9fc6028cc1f, type: 3}
+  _caveManPrefab: {fileID: 544307509177008620, guid: 62f12431d2203b24cb5aa9fc6028cc1f, type: 3}
+  _ninjaPrefab: {fileID: 9199851473116995868, guid: c9c61bec9e1a4ca46820e2d38832af09, type: 3}
   _target: {fileID: 996725902}
   _spawnPosition: {fileID: 2023758044}
 --- !u!1 &1123834075

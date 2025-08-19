@@ -2,7 +2,8 @@
 {
     public enum FighterType
     {
-        CaveMan
+        CaveMan,
+        Ninja
     }
 
     public enum FighterState

@@ -8,12 +8,14 @@ namespace UI
     {
         [Header("References")]
         [SerializeField] private Button _caveManSpawnButton;
+        [SerializeField] private Button _ninjaSpawnButton;
 
         #region Unity Methods
 
         private void Awake()
         {
             _caveManSpawnButton.onClick.AddListener(SpawnCaveManButtonClick);
+            _ninjaSpawnButton.onClick.AddListener(SpawnNinjaButtonClick);
         }
 
         #endregion
@@ -21,6 +23,11 @@ namespace UI
         private void SpawnCaveManButtonClick()
         {
             PlayerFighterSpawnManager.Instance.SpawnCaveFighter();
+        }
+
+        private void SpawnNinjaButtonClick()
+        {
+            PlayerFighterSpawnManager.Instance.SpawnNinjaFighter();
         }
     }
 }

@@ -17,16 +17,16 @@ namespace Abstracts
 
         [Header("Settings")]
         private FighterType _fighterType;
-        private float _attackRange;
         private float _moveSpeed;
         private float _health;
-        private float _damage;
+        protected float _attackRange;
+        protected float _damage;
 
         [Header("AI Settings")]
-        public Transform _targetDestination;
-        private FighterState _fighterState;
+        [SerializeField] protected LayerMask _layerMask;
+        protected FighterState _fighterState;
         private NavMeshAgent _navMeshAgent;
-        [SerializeField] private LayerMask _layerMask;
+        public Transform _targetDestination;
 
         #region Unity Methods
 
@@ -49,22 +49,8 @@ namespace Abstracts
 
         #region AI Methods
 
-        // This method is called from the animation event in the fighter's attack animation on FighterAnimationEventController.cs.
-        public void Attack()
-        {
-            if (_fighterState == FighterState.Attacking)
-            {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _attackRange, _layerMask);
-                if (hit.collider != null)
-                {
-                    if (hit.collider.TryGetComponent(out IAttackable attackable))
-                    {
-                        attackable.TakeDamage(_damage);
-                    }
-                    Debug.Log(hit.collider.gameObject.name);
-                }
-            }
-        }
+        /// <summary> This method is called from the animation event in the fighter's attack animation on FighterAnimationEventController.cs. /// </summary>
+        public abstract void Attack();
 
         public void TakeDamage(float damage)
         {
@@ -74,8 +60,9 @@ namespace Abstracts
             if (_health <= 0)
             {
                 // TODO : Implement Object pooling
-                Destroy(gameObject);
                 ChangeFighterState(FighterState.Dead);
+                gameObject.layer = LayerMask.NameToLayer("Default");
+                Destroy(gameObject, 1f);
             }
         }
 
@@ -136,6 +123,7 @@ namespace Abstracts
             _navMeshAgent.updateRotation = false;
             _navMeshAgent.updateUpAxis = false;
             _navMeshAgent.speed = _moveSpeed;
+            _navMeshAgent.stoppingDistance = _attackRange;
         }
         
         private void OnDrawGizmos()
