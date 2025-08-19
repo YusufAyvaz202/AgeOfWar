@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Abstracts;
+using Misc;
 using UnityEngine;
 
 namespace Managers
@@ -12,14 +13,22 @@ namespace Managers
         [SerializeField] private Transform _spawnPosition;
         [SerializeField] private bool _isSpawning = true;
         [SerializeField] private float _timeBetweenSpawns = 0.2f;
+        
+        [Header("Settings")]
+        private Coroutine _spawnCoroutine;
 
         #region Unity Methods
         
-        private void Start()
+        private void OnEnable()
         {
-            StartCoroutine(SpawnFighter());
+            EventManager.OnGameStateChanged += OnGameStateChanged;
         }
-        
+
+        private void OnDisable()
+        {
+            EventManager.OnGameStateChanged -= OnGameStateChanged;
+        }
+
         #endregion
 
         IEnumerator SpawnFighter()
@@ -32,5 +41,24 @@ namespace Managers
                 baseFighter.SetTargetDestination(_target);
             }
         }
+
+        #region Helper Methods
+
+        private void OnGameStateChanged(GameState gameState)
+        {
+            if (gameState == GameState.Playing)
+            {
+                _isSpawning = true;
+                _spawnCoroutine = StartCoroutine(SpawnFighter());
+            }
+            else
+            {
+                _isSpawning = false;
+                StopCoroutine(_spawnCoroutine);
+            }
+        }
+
+        #endregion
+        
     }
 }

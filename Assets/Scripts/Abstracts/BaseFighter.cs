@@ -1,5 +1,6 @@
 ﻿using Fighter;
 using Interfaces;
+using Managers;
 using Misc;
 using ScriptableObjects;
 using UI;
@@ -28,11 +29,19 @@ namespace Abstracts
         private NavMeshAgent _navMeshAgent;
         public Transform _targetDestination;
 
+        [Header("Game Settings")] 
+        protected bool _isPlaying = true;
+
         #region Unity Methods
 
         private void Awake()
         {
             Initialize();
+        }
+
+        private void OnEnable()
+        {
+            EventManager.OnGameStateChanged += OnGameStateChanged;
         }
 
         private void Start()
@@ -45,6 +54,11 @@ namespace Abstracts
             Move();
         }
 
+        private void OnDisable()
+        {
+            EventManager.OnGameStateChanged -= OnGameStateChanged;
+        }
+
         #endregion
 
         #region AI Methods
@@ -54,6 +68,7 @@ namespace Abstracts
 
         public void TakeDamage(float damage)
         {
+            if(!_isPlaying) return;
             _health -= damage;
             _healthUI.UpdateHealthBar(_health);
 
@@ -68,7 +83,10 @@ namespace Abstracts
 
         private void Move()
         {
+            if(!_isPlaying) return;
+            
             FindNearestTarget();
+            
             if (_targetDestination == null || _fighterState != FighterState.Move) return;
             _navMeshAgent.SetDestination(_targetDestination.position);
 
@@ -124,6 +142,11 @@ namespace Abstracts
             _navMeshAgent.updateUpAxis = false;
             _navMeshAgent.speed = _moveSpeed;
             _navMeshAgent.stoppingDistance = _attackRange;
+        }
+        
+        private void OnGameStateChanged(GameState gameState)
+        {
+            _isPlaying = gameState == GameState.Playing;
         }
         
         private void OnDrawGizmos()

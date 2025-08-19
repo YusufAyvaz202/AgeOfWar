@@ -13,4 +13,13 @@
         Attacking,
         Dead,
     }
+    
+    public enum GameState
+    {
+        Waiting,
+        Playing,
+        Paused,
+        Win,
+        Lose
+    }
 }

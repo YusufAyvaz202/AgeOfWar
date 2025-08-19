@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using Managers;
+using Misc;
 using UnityEngine;
 
 namespace Economy
@@ -14,6 +14,7 @@ namespace Economy
         public float _meatCount;
         public float _meatProductionPerTime;
         private bool _isProductionContinue;
+        private Coroutine _productionCoroutine;
 
         #region Unity Methods
 
@@ -29,10 +30,14 @@ namespace Economy
             }
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            _isProductionContinue = true;
-            StartCoroutine(IncreaseMeat());
+            EventManager.OnGameStateChanged += OnGameStateChanged;
+        }
+        
+        private void OnDisable()
+        {
+            EventManager.OnGameStateChanged -= OnGameStateChanged;
         }
 
         #endregion
@@ -49,7 +54,9 @@ namespace Economy
                 UIManager.Instance.UpdateMeatCountText(Mathf.FloorToInt(_meatCount));
             }
         }
-        
+
+        #region Helper Methods
+
         public bool CanSpawn(int meatCost)
         {
             if (_meatCount >= meatCost)
@@ -60,6 +67,22 @@ namespace Economy
             }
             return false;
         }
+        
+        private void OnGameStateChanged(GameState gameState)
+        {
+            if (gameState == GameState.Playing)
+            {
+                _isProductionContinue = true;
+                _productionCoroutine = StartCoroutine(IncreaseMeat());
+            }
+            else
+            {
+                _isProductionContinue = false;
+                StopCoroutine(_productionCoroutine);
+            }
+        }
+
+        #endregion
         
     }
 }

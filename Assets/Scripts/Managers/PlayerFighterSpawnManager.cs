@@ -15,6 +15,9 @@ namespace Managers
         [SerializeField] private BaseFighter _ninjaPrefab;
         [SerializeField] private Transform _target;
         [SerializeField] private Transform _spawnPosition;
+        
+        [Header("Settings")]
+        private bool _isPlaying;
 
         #region Unity Methods
 
@@ -30,10 +33,22 @@ namespace Managers
             }
         }
 
+        private void OnEnable()
+        {
+            EventManager.OnGameStateChanged += OnGameStateChanged;
+        }
+        
+        private void OnDisable()
+        {
+            EventManager.OnGameStateChanged -= OnGameStateChanged;
+        }
+
         #endregion
 
         public void SpawnCaveFighter()
         {
+            if (!_isPlaying) return;
+            
             if (EconomyManager.Instance.CanSpawn(Const.FighterCosts.CAVEMAN_COST))
             {
                 BaseFighter baseFighter = Instantiate(_caveManPrefab);
@@ -44,6 +59,7 @@ namespace Managers
         
         public void SpawnNinjaFighter()
         {
+            if (!_isPlaying) return;
             if (EconomyManager.Instance.CanSpawn(Const.FighterCosts.NINJA_COST))
             {
                 BaseFighter baseFighter = Instantiate(_ninjaPrefab);
@@ -51,5 +67,14 @@ namespace Managers
                 baseFighter.SetTargetDestination(_target);
             }
         }
+
+        #region Helper Methods
+
+        private void OnGameStateChanged(GameState gameState)
+        {
+            _isPlaying = gameState == GameState.Playing;
+        }
+
+        #endregion
     }
 }

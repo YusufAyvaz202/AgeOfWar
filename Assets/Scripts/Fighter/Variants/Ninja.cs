@@ -9,7 +9,8 @@ namespace Fighter.Variants
     {
         public override void Attack()
         {
-            // TODO: This is same as the CaveMan attack method, in future we can add unique attack logic for Ninja. like Instantiate for throwing shurikens 
+            // TODO: This is same as the CaveMan attack method, in future we can add unique attack logic for Ninja. like Instantiate for throwing shurikens
+            if(!_isPlaying) return;
             if (_fighterState == FighterState.Attacking)
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _attackRange, _layerMask);

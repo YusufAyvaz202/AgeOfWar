@@ -9,6 +9,7 @@ namespace Fighter.Variants
     {
         public override void Attack()
         {
+            if(!_isPlaying) return;
             if (_fighterState == FighterState.Attacking)
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _attackRange, _layerMask);
