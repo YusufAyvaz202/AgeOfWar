@@ -52,6 +52,8 @@ namespace Abstracts
 
         private void FixedUpdate()
         {
+            if (!_isPlaying) return;
+            FindNearestTarget();
             Move();
         }
 
@@ -76,19 +78,32 @@ namespace Abstracts
             if (_health <= 0)
             {
                 ChangeFighterState(FighterState.Dead);
-                gameObject.layer = LayerMask.NameToLayer(Const.Layers.DEFAULT);
-
                 // TODO: Test all circumstances where this is called.
-                if (!_isPlayerFighter)
-                {
-                    ResetYourself(Const.Layers.ENEMY_FIGHTER);
-                    EventManager.OnEnemyFighterDead?.Invoke(this);
-                }
-                else
-                {
-                    ResetYourself(Const.Layers.PLAYER_FIGHTER);
-                    EventManager.OnPlayerFighterDead?.Invoke(this);
-                }
+                FighterDead();
+            }
+        }
+
+        private void FighterDead()
+        {
+            _navMeshAgent.ResetPath();
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.enabled = false;
+            _navMeshAgent.enabled = true;
+    
+            _health = _fighterDataSo.Health;
+            _healthUI.UpdateHealthBar(_health);
+    
+            _targetDestination = null;
+    
+            if (_isPlayerFighter)
+            {
+                gameObject.layer = LayerMask.NameToLayer(Const.Layers.PLAYER_FIGHTER);
+                EventManager.OnPlayerFighterDead?.Invoke(this);
+            }
+            else
+            {
+                gameObject.layer = LayerMask.NameToLayer(Const.Layers.ENEMY_FIGHTER);
+                EventManager.OnEnemyFighterDead?.Invoke(this); 
             }
         }
 
@@ -98,10 +113,6 @@ namespace Abstracts
 
         private void Move()
         {
-            if (!_isPlaying) return;
-
-            FindNearestTarget();
-
             if (_targetDestination == null || _fighterState != FighterState.Move) return;
             _navMeshAgent.SetDestination(_targetDestination.position);
 
@@ -133,20 +144,12 @@ namespace Abstracts
         {
             _fighterState = fighterState;
             _fighterAnimationController.SetAnimationState(_fighterState);
+            Debug.Log(fighterState.ToString());
         }
 
         public void SetTargetDestination(Transform target)
         {
             _targetDestination = target;
-        }
-
-        private void ResetYourself(string LayerNAME)
-        {
-            _fighterState = FighterState.Move;
-            _navMeshAgent.ResetPath();
-            _health = _fighterDataSo.Health;
-            _healthUI.UpdateHealthBar(_health);
-            gameObject.layer = LayerMask.NameToLayer(LayerNAME);
         }
 
         private void Initialize()

@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fighterDataSo: {fileID: 11400000, guid: d368c46777a0da64fb8363efd1893fb2, type: 2}
+  _fighterType: 0
   _layerMask:
     serializedVersion: 2
     m_Bits: 64

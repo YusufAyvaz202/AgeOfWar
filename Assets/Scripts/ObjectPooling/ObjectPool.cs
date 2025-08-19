@@ -10,9 +10,12 @@ namespace ObjectPooling
         [Header("Object Pool Settings")]
         private Dictionary<FighterType, Queue<BaseFighter>> _baseFighterQueue = new();
         private Transform _parent;
+        private BaseFighter[] _baseFightersPrefabs;
 
         public ObjectPool(BaseFighter[] baseFighters, int initialSize, Transform parent = null)
         {
+            _baseFightersPrefabs = baseFighters;
+            _parent = parent;
             foreach (BaseFighter baseFighter in baseFighters)
             {
                 var fighterType = baseFighter.GetFighterType();
@@ -38,8 +41,15 @@ namespace ObjectPooling
                     return objectInstance;
                 }
 
-                Debug.LogWarning("No available objects in pool for type: " + fighterType);
-                return null;
+                foreach (var baseFighter in _baseFightersPrefabs)
+                {
+                    if (baseFighter.GetFighterType() == fighterType)
+                    {
+                        BaseFighter objectInstance = Object.Instantiate(baseFighter, _parent);
+                        objectInstance.gameObject.SetActive(true);
+                        return objectInstance;
+                    }
+                }
             }
             Debug.LogError("No pool found for type: " + fighterType);
             return null;

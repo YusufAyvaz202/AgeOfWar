@@ -62,7 +62,6 @@ namespace Managers
             {
                 BaseFighter baseFighter = _fighterPool.GetFighter(FighterType.CaveMan);
                 baseFighter.transform.position = _spawnPosition.position;
-                baseFighter.SetTargetDestination(_target);
             }
         }
         
@@ -73,7 +72,6 @@ namespace Managers
             {
                 BaseFighter baseFighter = _fighterPool.GetFighter(FighterType.Ninja);
                 baseFighter.transform.position = _spawnPosition.position;
-                baseFighter.SetTargetDestination(_target);
             }
         }
 
