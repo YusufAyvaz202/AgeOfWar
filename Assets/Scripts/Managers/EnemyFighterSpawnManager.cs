@@ -101,6 +101,13 @@ namespace Managers
                 _isPaused = false;
                 _spawnCoroutine ??= StartCoroutine(SpawnFighter());
             }
+            else if (gameState == GameState.Win || gameState == GameState.Lose)
+            {
+                _currentSpawnCount = 0;
+                _currentUnitIndex = 0;
+                _currentWaveIndex = 0;
+                _isPaused = true;
+            }
             else
             {
                 _isPaused = true;

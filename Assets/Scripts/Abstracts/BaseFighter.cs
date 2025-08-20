@@ -57,7 +57,7 @@ namespace Abstracts
             Move();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             EventManager.OnGameStateChanged -= OnGameStateChanged;
         }
@@ -77,7 +77,6 @@ namespace Abstracts
 
             if (_health <= 0)
             {
-                ChangeFighterState(FighterState.Dead);
                 // TODO: Test all circumstances where this is called.
                 FighterDead();
             }
@@ -85,11 +84,8 @@ namespace Abstracts
 
         private void FighterDead()
         {
-            _navMeshAgent.ResetPath();
-            _navMeshAgent.isStopped = false;
-            _navMeshAgent.enabled = false;
-            _navMeshAgent.enabled = true;
-    
+            ChangeFighterState(FighterState.Dead);
+            
             _health = _fighterDataSo.Health;
             _healthUI.UpdateHealthBar(_health);
     
@@ -172,17 +168,23 @@ namespace Abstracts
 
         private void OnGameStateChanged(GameState gameState)
         {
-            _isPlaying = gameState == GameState.Playing;
-
             if (gameState == GameState.Playing)
             {
                 _isPlaying = true;
-                _navMeshAgent.isStopped = false;
+
+                if (gameObject.activeInHierarchy)
+                {
+                    _navMeshAgent.isStopped = false;
+                }
             }
-            else
+            else if (gameState == GameState.Win || gameState == GameState.Lose)
             {
+                FighterDead();
                 _isPlaying = false;
-                _navMeshAgent.isStopped = true;
+                if (gameObject.activeInHierarchy)
+                {
+                    _navMeshAgent.isStopped = true;
+                }
             }
         }
 
