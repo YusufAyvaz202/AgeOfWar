@@ -43,14 +43,7 @@ namespace Castle
 
             if (_health <= 0)
             {
-                if (_isPlayerCastle)
-                {
-                    GameManager.Instance.SetGameState(GameState.Lose);
-                }
-                else
-                {
-                    GameManager.Instance.SetGameState(GameState.Win);
-                }
+                GameManager.Instance.SetGameState(_isPlayerCastle ? GameState.Lose : GameState.Win);
             }
         }
 

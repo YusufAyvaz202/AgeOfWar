@@ -76,7 +76,7 @@ namespace Economy
         public void SetMeatProduction(float production)
         {
             _meatProductionPerTime = production;
-            //UIManager.Instance.UpdateMeatProductionText(Mathf.FloorToInt(_meatProductionPerTime));
+            UIManager.Instance.UpdateMeatProductionText(_meatProductionPerTime);
         }
         
         private void OnGameStateChanged(GameState gameState)

@@ -37,6 +37,11 @@ namespace Managers
         {
             _playerMeatInfoUI.UpdateMeatCountText(meatCount);
         }
+        
+        public void UpdateMeatProductionText(float meatProduction)
+        {
+            _playerMeatInfoUI.UpdateMeatProductionRateText(meatProduction);
+        }
 
         #endregion
 
