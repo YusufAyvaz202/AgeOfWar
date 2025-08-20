@@ -9,8 +9,8 @@ namespace Managers
         public static GameManager Instance;
         
         [Header("Game Settings")]
-        private GameState _currentGameState = GameState.Waiting;
-        private int _currentLevelIndex = 0;
+        private GameState _currentGameState = GameState.Paused;
+        private int _currentLevelIndex;
 
         #region Unity Methods
 
@@ -28,7 +28,13 @@ namespace Managers
 
         private void Start()
         {
-            SetGameState(GameState.Playing);
+            SetGameState(GameState.Paused);
+            SetGameState(GameState.Waiting);
+        }
+
+        private void SetStarterState()
+        {
+            SetGameState(GameState.Waiting);
         }
 
         #endregion

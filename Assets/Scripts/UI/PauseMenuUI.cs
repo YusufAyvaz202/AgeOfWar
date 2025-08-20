@@ -38,7 +38,7 @@ namespace UI
             _resumeButton.gameObject.SetActive(true);
 
             _blackBackgroundImage.DOFade(0.8f, _animationDuration).SetEase(Ease.Linear);
-            _winPopupTransform.DOScale(1.5f, _animationDuration).SetEase(Ease.OutBack);
+            _winPopupTransform.DOScale(1.0f, _animationDuration).SetEase(Ease.OutBack);
         }
 
         private void OnGameResume()

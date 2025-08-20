@@ -13,7 +13,10 @@ namespace Economy
         [Header("Economy Settings")]
         public float _meatCount;
         public float _meatProductionPerTime;
+        public int _meatProductionPerTimeCost;
         private bool _isProductionContinue;
+        
+        [Header("Other Settings")]
         private Coroutine _productionCoroutine;
 
         #region Unity Methods
@@ -73,10 +76,21 @@ namespace Economy
             return _meatProductionPerTime;
         }
         
-        public void SetMeatProduction(float production)
+        public void SetMeatProductionRate(float production)
         {
             _meatProductionPerTime = production;
-            UIManager.Instance.UpdateMeatProductionText(_meatProductionPerTime);
+            UIManager.Instance.UpdateMeatProductionRateText(_meatProductionPerTime);
+        }
+        
+        public void IncreaseMeatProductionRate()
+        {
+            _meatProductionPerTime += 0.2f;
+            UIManager.Instance.UpdateMeatProductionRateText(_meatProductionPerTime);
+        }
+
+        public int IncreaseMeatProductionRateCost()
+        {
+            return _meatProductionPerTimeCost;
         }
         
         private void OnGameStateChanged(GameState gameState)
@@ -89,7 +103,11 @@ namespace Economy
             else
             {
                 _isProductionContinue = false;
-                StopCoroutine(_productionCoroutine);
+                
+                if (_productionCoroutine is not null)
+                {
+                    StopCoroutine(_productionCoroutine);
+                }
             }
         }
 

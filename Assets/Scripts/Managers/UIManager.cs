@@ -1,4 +1,5 @@
-﻿using UI;
+﻿using Misc;
+using UI;
 using UnityEngine;
 
 namespace Managers
@@ -11,6 +12,7 @@ namespace Managers
         [Header("References")]
         private PlayerMeatInfoUI _playerMeatInfoUI;
         private PlayerGoldUI _playerGoldUI;
+        private ShopUI _shopUI;
 
         #region Unity Methods
 
@@ -27,6 +29,18 @@ namespace Managers
 
             _playerMeatInfoUI = FindObjectOfType<PlayerMeatInfoUI>();
             _playerGoldUI = FindObjectOfType<PlayerGoldUI>();
+            _shopUI = FindObjectOfType<ShopUI>();
+            
+        }
+
+        private void OnEnable()
+        {
+            EventManager.OnGameStateChanged += OnGameStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            EventManager.OnGameStateChanged -= OnGameStateChanged;
         }
 
         #endregion
@@ -38,9 +52,10 @@ namespace Managers
             _playerMeatInfoUI.UpdateMeatCountText(meatCount);
         }
         
-        public void UpdateMeatProductionText(float meatProduction)
+        public void UpdateMeatProductionRateText(float meatProduction)
         {
             _playerMeatInfoUI.UpdateMeatProductionRateText(meatProduction);
+            _shopUI.UpdateMeatProductionRateText(meatProduction);
         }
 
         #endregion
@@ -50,6 +65,39 @@ namespace Managers
         public void UpdateGoldCountText(int goldCount)
         {
             _playerGoldUI.UpdateGoldCountText(goldCount);
+        }
+
+        #endregion
+
+
+        
+        #region ShopUI Methods
+        
+        private void OnGameOver()
+        {
+            _shopUI.OnGameOver();
+        }
+        
+        private void OnGameStart()
+        {
+            _shopUI.OnGameStart();
+        }
+        
+        #endregion
+
+
+        #region Helper Methods
+
+        private void OnGameStateChanged(GameState gameState)
+        {
+            if (gameState == GameState.Lose || gameState == GameState.Win || gameState == GameState.Waiting)
+            {
+                OnGameOver();
+            }
+            else if (gameState == GameState.Playing)
+            {
+                OnGameStart();
+            }
         }
 
         #endregion

@@ -16,7 +16,7 @@ namespace SaveSystem
         {
             InitializeLoadData();
             GameManager.Instance.SetCurrentLevelIndex(_allGameData.CurrentLevelIndex);
-            EconomyManager.Instance.SetMeatProduction(_allGameData.PlayerData.CurrentMeatProductionRate);
+            EconomyManager.Instance.SetMeatProductionRate(_allGameData.PlayerData.CurrentMeatProductionRate);
             GoldManager.Instance.SetGoldAmount(_allGameData.PlayerData.GoldCount);
         }
 
@@ -50,10 +50,10 @@ namespace SaveSystem
         private void InitializeLoadData()
         {
             _allGameData = LoadAllGameData();
-            if (_allGameData?.PlayerData != null)
-                Debug.Log(_allGameData.PlayerData.GoldCount);
-            else
+            if (_allGameData?.PlayerData == null)
+            { 
                 Debug.LogWarning("AllGameData or PlayerData came null!");
+            }
         }
         
         private AllGameData LoadAllGameData()
