@@ -23,7 +23,6 @@ namespace Managers
             {
                 Destroy(gameObject);
             }
-            
         }
 
         private void Start()
