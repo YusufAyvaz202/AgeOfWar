@@ -1372,10 +1372,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseFighterPrefab:
   - {fileID: 544307509177008620, guid: 930dfe4864286664fb2d04c48a67504a, type: 3}
+  - {fileID: 9199851473116995868, guid: b90bd876bc5f05a44ae18ae2cedc30b0, type: 3}
+  _currentLevelData: {fileID: 11400000, guid: 2254e24642f2cea4d968dedb8dcc954c, type: 2}
   _target: {fileID: 2023758044}
   _spawnPosition: {fileID: 996725902}
   _spawnParent: {fileID: 981292238}
-  _isSpawning: 1
   _timeBetweenSpawns: 1
 --- !u!4 &782638912
 Transform:
