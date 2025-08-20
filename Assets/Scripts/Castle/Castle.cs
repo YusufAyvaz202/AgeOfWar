@@ -10,6 +10,7 @@ namespace Castle
     {
         [Header("Settings")]
         [SerializeField] private float _health = 100f;
+        [SerializeField] private bool _isPlayerCastle;
         private HealthUI _healthUI;
         private bool _isPlaying;
 
@@ -42,7 +43,14 @@ namespace Castle
 
             if (_health <= 0)
             {
-                // TODO: Determine win or lose with GameStates
+                if (_isPlayerCastle)
+                {
+                    GameManager.Instance.SetGameState(GameState.Lose);
+                }
+                else
+                {
+                    GameManager.Instance.SetGameState(GameState.Win);
+                }
             }
         }
 

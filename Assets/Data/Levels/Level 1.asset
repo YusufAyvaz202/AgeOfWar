@@ -10,24 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 560c27a200dc408897f41de372e3d4a0, type: 3}
-  m_Name: 1
+  m_Name: Level 1
   m_EditorClassIdentifier: 
-  LevelId: 0
+  LevelId: 1
   TimeBetweenEachFighter: 0.5
   Waves:
   - Units:
-    - FighterType: 0
-      UnitSpawnCount: 1
-      TimeBetweenEachUnits: 2
-    - FighterType: 0
-      UnitSpawnCount: 3
-      TimeBetweenEachUnits: 0
-    SpawnDelayBetweenWawe: 5
-  - Units:
-    - FighterType: 0
-      UnitSpawnCount: 1
-      TimeBetweenEachUnits: 3
     - FighterType: 1
       UnitSpawnCount: 1
+      TimeBetweenEachUnits: 2
+    - FighterType: 1
+      UnitSpawnCount: 2
       TimeBetweenEachUnits: 0
-    SpawnDelayBetweenWawe: 0
+    SpawnDelayBetweenWawe: 5

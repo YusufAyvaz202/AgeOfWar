@@ -16,7 +16,6 @@ namespace Managers
         [SerializeField] private Transform _target;
         [SerializeField] private Transform _spawnPosition;
         [SerializeField] private Transform _spawnParent;
-        [SerializeField] private float _timeBetweenSpawns = 0.2f;
 
         [Header("Settings")] 
         private Coroutine _spawnCoroutine;
@@ -46,7 +45,6 @@ namespace Managers
         }
 
         #endregion
-
         
         private IEnumerator SpawnFighter()
         {
@@ -80,8 +78,6 @@ namespace Managers
 
             _spawnCoroutine = null;
         }
-
-       
 
         #region Helper Methods
         

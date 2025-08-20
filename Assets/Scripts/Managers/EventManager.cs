@@ -12,8 +12,5 @@ namespace Managers
         // Event to notify when a fighter is dead.
         public static Action<BaseFighter> OnPlayerFighterDead;
         public static Action<BaseFighter> OnEnemyFighterDead;
-        
-        // Event to notify when the gold amount changes.
-        public static Action<int> OnGoldAmountChanged;
     }
 }

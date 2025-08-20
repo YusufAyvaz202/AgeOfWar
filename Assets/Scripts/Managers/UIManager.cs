@@ -5,11 +5,12 @@ namespace Managers
 {
     public class UIManager : MonoBehaviour
     {
-        [Header("Singleton")]
+        [Header("Singleton")] 
         public static UIManager Instance;
-        
-        [Header("References")] 
+
+        [Header("References")]
         private PlayerMeatInfoUI _playerMeatInfoUI;
+        private PlayerGoldUI _playerGoldUI;
 
         #region Unity Methods
 
@@ -25,6 +26,7 @@ namespace Managers
             }
 
             _playerMeatInfoUI = FindObjectOfType<PlayerMeatInfoUI>();
+            _playerGoldUI = FindObjectOfType<PlayerGoldUI>();
         }
 
         #endregion
@@ -34,6 +36,15 @@ namespace Managers
         public void UpdateMeatCountText(int meatCount)
         {
             _playerMeatInfoUI.UpdateMeatCountText(meatCount);
+        }
+
+        #endregion
+
+        #region PlayerGold Methods
+
+        public void UpdateGoldCountText(int goldCount)
+        {
+            _playerGoldUI.UpdateGoldCountText(goldCount);
         }
 
         #endregion

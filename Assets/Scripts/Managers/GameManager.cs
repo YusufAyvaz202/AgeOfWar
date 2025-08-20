@@ -10,6 +10,7 @@ namespace Managers
         
         [Header("Game Settings")]
         private GameState _currentGameState = GameState.Waiting;
+        private int _currentLevelIndex = 0;
 
         #region Unity Methods
 
@@ -39,5 +40,19 @@ namespace Managers
             EventManager.OnGameStateChanged?.Invoke(_currentGameState);
             Debug.Log($"Game State Changed: {_currentGameState}");
         }
+
+        #region  Helper Methods
+
+        public int GetCurrentLevelIndex()
+        {
+            return _currentLevelIndex;
+        }
+        
+        public void SetCurrentLevelIndex(int levelIndex)
+        {
+            _currentLevelIndex = levelIndex;
+        }
+
+        #endregion
     }
 }

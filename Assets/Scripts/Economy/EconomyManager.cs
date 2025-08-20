@@ -68,6 +68,17 @@ namespace Economy
             return false;
         }
         
+        public float GetCurrentMeatProduction()
+        {
+            return _meatProductionPerTime;
+        }
+        
+        public void SetMeatProduction(float production)
+        {
+            _meatProductionPerTime = production;
+            //UIManager.Instance.UpdateMeatProductionText(Mathf.FloorToInt(_meatProductionPerTime));
+        }
+        
         private void OnGameStateChanged(GameState gameState)
         {
             if (gameState == GameState.Playing)

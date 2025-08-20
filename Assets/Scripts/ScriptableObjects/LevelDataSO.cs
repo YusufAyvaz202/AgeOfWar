@@ -24,6 +24,6 @@ namespace ScriptableObjects
     {
         public FighterType FighterType;
         public int UnitSpawnCount;
-        public int TimeBetweenEachUnits;
+        public float TimeBetweenEachUnits;
     }
 }
