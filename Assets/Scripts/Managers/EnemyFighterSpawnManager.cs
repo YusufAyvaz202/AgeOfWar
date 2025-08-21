@@ -103,7 +103,12 @@ namespace Managers
             else if (gameState == GameState.Win || gameState == GameState.Lose)
             {
                 _isPaused = true;
-                StopCoroutine(_spawnCoroutine);
+
+                if (_spawnCoroutine != null)
+                {
+                    StopCoroutine(_spawnCoroutine);
+                }
+                
                 _spawnCoroutine = null;
                 _currentSpawnCount = 0;
                 _currentUnitIndex = 0;

@@ -42,13 +42,13 @@ namespace Managers
         private void OnEnable()
         {
             EventManager.OnGameStateChanged += OnGameStateChanged;
-            EventManager.OnPlayerFighterDead += OnEnemyFighterDead;
+            EventManager.OnPlayerFighterDead += OnPlayerFighterDead;
         }
         
         private void OnDisable()
         {
             EventManager.OnGameStateChanged -= OnGameStateChanged;
-            EventManager.OnPlayerFighterDead -= OnEnemyFighterDead;
+            EventManager.OnPlayerFighterDead -= OnPlayerFighterDead;
         }
 
         #endregion
@@ -81,7 +81,7 @@ namespace Managers
             _isPlaying = gameState == GameState.Playing;
         }
         
-        private void OnEnemyFighterDead(BaseFighter baseFighter)
+        private void OnPlayerFighterDead(BaseFighter baseFighter)
         {
             _fighterPool.ReturnFighterToPool(baseFighter);
         }

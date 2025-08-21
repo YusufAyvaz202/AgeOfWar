@@ -117,6 +117,18 @@ namespace Economy
                 _isProductionContinue = true;
                 _productionCoroutine = StartCoroutine(IncreaseMeat());
             }
+            else if (gameState == GameState.Win || gameState == GameState.Lose)
+            {
+                _isProductionContinue = false;
+                
+                if (_productionCoroutine is not null)
+                {
+                    StopCoroutine(_productionCoroutine);
+                }
+                
+                _meatCount = 0;
+                UIManager.Instance.UpdateMeatCountText(Mathf.FloorToInt(_meatCount));
+            }
             else
             {
                 _isProductionContinue = false;
