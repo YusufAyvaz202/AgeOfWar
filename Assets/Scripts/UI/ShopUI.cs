@@ -49,9 +49,14 @@ namespace UI
             _meatProductionRateText.text = $"{productionRate:F2}/s";
         }
         
+        public void UpdateMeatProductionRateCostText(int cost)
+        {
+            _meatProductionRateCostText.text = cost.ToString();
+        }
+        
         private void IncreaseMeatProductionRateButtonClick()
         {
-            if (GoldManager.Instance.CanSpend(EconomyManager.Instance.IncreaseMeatProductionRateCost()))
+            if (GoldManager.Instance.CanSpend(EconomyManager.Instance.GetMeatProductionRateCost()))
             {
                 EconomyManager.Instance.IncreaseMeatProductionRate();
             }

@@ -23,9 +23,9 @@ namespace ObjectPooling
                 
                 for (int i = 0; i < initialSize; i++)
                 {
-                    BaseFighter objectInstance = Object.Instantiate(baseFighter, parent);
-                    objectInstance.gameObject.SetActive(false);
-                    _baseFighterQueue[fighterType].Enqueue(objectInstance);
+                    BaseFighter fighter = Object.Instantiate(baseFighter, parent);
+                    fighter.gameObject.SetActive(false);
+                    _baseFighterQueue[fighterType].Enqueue(fighter);
                 }
             }
         }
@@ -36,18 +36,18 @@ namespace ObjectPooling
             {
                 if (queue.Count > 0)
                 {
-                    BaseFighter objectInstance = queue.Dequeue();
-                    objectInstance.gameObject.SetActive(true);
-                    return objectInstance;
+                    BaseFighter fighter = queue.Dequeue();
+                    fighter.gameObject.SetActive(true);
+                    return fighter;
                 }
 
                 foreach (var baseFighter in _baseFightersPrefabs)
                 {
                     if (baseFighter.GetFighterType() == fighterType)
                     {
-                        BaseFighter objectInstance = Object.Instantiate(baseFighter, _parent);
-                        objectInstance.gameObject.SetActive(true);
-                        return objectInstance;
+                        BaseFighter fighter = Object.Instantiate(baseFighter, _parent);
+                        fighter.gameObject.SetActive(true);
+                        return fighter;
                     }
                 }
             }
@@ -55,12 +55,12 @@ namespace ObjectPooling
             return null;
         }
         
-        public void ReturnFighterToPool(BaseFighter objectInstance)
+        public void ReturnFighterToPool(BaseFighter fighter)
         {
-            objectInstance.gameObject.SetActive(false);
-            if (_baseFighterQueue.TryGetValue(objectInstance.GetFighterType(), out Queue<BaseFighter> queue))
+            fighter.gameObject.SetActive(false);
+            if (_baseFighterQueue.TryGetValue(fighter.GetFighterType(), out Queue<BaseFighter> queue))
             {
-                queue.Enqueue(objectInstance);
+                queue.Enqueue(fighter);
             }
         }
     }

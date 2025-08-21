@@ -13,7 +13,6 @@ namespace Managers
         [Header("References")] 
         [SerializeField] private BaseFighter[] _baseFighterPrefab;
         [SerializeField] private LevelDataSO _currentLevelData;
-        [SerializeField] private Transform _target;
         [SerializeField] private Transform _spawnPosition;
         [SerializeField] private Transform _spawnParent;
 

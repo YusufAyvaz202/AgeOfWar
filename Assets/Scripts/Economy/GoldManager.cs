@@ -48,17 +48,6 @@ namespace Economy
             UIManager.Instance.UpdateGoldCountText(_goldAmount);
         }
         
-        public bool CanSpend(int goldCost)
-        {
-            if (_goldAmount >= goldCost)
-            {
-                _goldAmount -= goldCost;
-                UIManager.Instance.UpdateGoldCountText(_goldAmount);
-                return true;
-            }
-            return false;
-        }
-
         #region Helper Methods
 
         public void SetGoldAmount(int goldAmount)
@@ -71,9 +60,19 @@ namespace Economy
         {
             return _goldAmount;
         }
+        
+        public bool CanSpend(int goldCost)
+        {
+            if (_goldAmount >= goldCost)
+            {
+                _goldAmount -= goldCost;
+                UIManager.Instance.UpdateGoldCountText(_goldAmount);
+                return true;
+            }
+            return false;
+        }
 
         #endregion
-        
         
     }
 }

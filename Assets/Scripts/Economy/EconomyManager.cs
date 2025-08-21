@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Managers;
 using Misc;
@@ -11,9 +12,11 @@ namespace Economy
         public static EconomyManager Instance;
         
         [Header("Economy Settings")]
-        public float _meatCount;
-        public float _meatProductionPerTime;
-        public int _meatProductionPerTimeCost;
+        private float _meatCount;
+        private float _meatProductionRate;
+        private int _meatProductionRateCost = 2;
+        private float _meatProductionRateIncreaseRate = 0.2f;
+        private float _meatProductionRateIncreaseCostRate = 1.5f;
         private bool _isProductionContinue;
         
         [Header("Other Settings")]
@@ -51,7 +54,7 @@ namespace Economy
             {
                 //Increase Meat count per time
                 yield return new WaitForSeconds(1f);
-                _meatCount += _meatProductionPerTime;
+                _meatCount += _meatProductionRate;
                 
                 // Update Meat Count UI.
                 UIManager.Instance.UpdateMeatCountText(Mathf.FloorToInt(_meatCount));
@@ -71,26 +74,40 @@ namespace Economy
             return false;
         }
         
-        public float GetCurrentMeatProduction()
+        public float GetCurrentMeatProductionRate()
         {
-            return _meatProductionPerTime;
+            return _meatProductionRate;
         }
         
         public void SetMeatProductionRate(float production)
         {
-            _meatProductionPerTime = production;
-            UIManager.Instance.UpdateMeatProductionRateText(_meatProductionPerTime);
+            _meatProductionRate = production;
+            UIManager.Instance.UpdateMeatProductionRateText(_meatProductionRate);
         }
         
         public void IncreaseMeatProductionRate()
         {
-            _meatProductionPerTime += 0.2f;
-            UIManager.Instance.UpdateMeatProductionRateText(_meatProductionPerTime);
+            _meatProductionRate += _meatProductionRateIncreaseRate;
+            UIManager.Instance.UpdateMeatProductionRateText(_meatProductionRate);
+            
+            IncreaseMeatProductionRateCost();
         }
 
-        public int IncreaseMeatProductionRateCost()
+        public int GetMeatProductionRateCost()
         {
-            return _meatProductionPerTimeCost;
+            return _meatProductionRateCost;
+        }
+
+        public void SetMeatProductionRateCost(int cost)
+        {
+            _meatProductionRateCost = cost;
+            UIManager.Instance.UpdateIncreaseMeatProductionRateText(_meatProductionRateCost);
+        }
+
+        private void IncreaseMeatProductionRateCost()
+        {
+            _meatProductionRateCost = (int)MathF.Ceiling(_meatProductionRateCost * _meatProductionRateIncreaseCostRate);
+            UIManager.Instance.UpdateIncreaseMeatProductionRateText(_meatProductionRateCost);
         }
         
         private void OnGameStateChanged(GameState gameState)

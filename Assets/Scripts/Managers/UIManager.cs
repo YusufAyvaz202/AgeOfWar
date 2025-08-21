@@ -69,8 +69,6 @@ namespace Managers
 
         #endregion
 
-
-        
         #region ShopUI Methods
         
         private void OnGameOver()
@@ -81,6 +79,11 @@ namespace Managers
         private void OnGameStart()
         {
             _shopUI.OnGameStart();
+        }
+        
+        public void UpdateIncreaseMeatProductionRateText(int amount)
+        {
+            _shopUI.UpdateMeatProductionRateCostText(amount);
         }
         
         #endregion
