@@ -35,6 +35,7 @@ namespace Managers
         private void Start()
         {
             _fighterPool = new ObjectPool(_baseFighterPrefab, 5, _spawnParent);
+            _currentLevelData = LevelManager.Instance.GetLevelData();
         }
 
         private void OnDisable()
@@ -113,6 +114,8 @@ namespace Managers
                 _currentSpawnCount = 0;
                 _currentUnitIndex = 0;
                 _currentWaveIndex = 0;
+                
+                _currentLevelData = LevelManager.Instance.GetLevelData();
             }
             else
             {

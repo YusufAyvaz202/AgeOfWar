@@ -7,10 +7,9 @@ namespace Managers
     {
         [Header("Singleton")]
         public static GameManager Instance;
-        
-        [Header("Game Settings")]
-        private GameState _currentGameState = GameState.Paused;
-        private int _currentLevelIndex;
+
+        [Header("Game Settings")] 
+        private GameState _currentGameState;
 
         #region Unity Methods
 
@@ -32,11 +31,6 @@ namespace Managers
             SetGameState(GameState.Waiting);
         }
 
-        private void SetStarterState()
-        {
-            SetGameState(GameState.Waiting);
-        }
-
         #endregion
         
         public void SetGameState(GameState gameState)
@@ -46,19 +40,5 @@ namespace Managers
             EventManager.OnGameStateChanged?.Invoke(_currentGameState);
             Debug.Log($"Game State Changed: {_currentGameState}");
         }
-
-        #region  Helper Methods
-
-        public int GetCurrentLevelIndex()
-        {
-            return _currentLevelIndex;
-        }
-        
-        public void SetCurrentLevelIndex(int levelIndex)
-        {
-            _currentLevelIndex = levelIndex;
-        }
-
-        #endregion
     }
 }

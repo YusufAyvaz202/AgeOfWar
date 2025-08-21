@@ -15,7 +15,7 @@ namespace SaveSystem
         private void Start()
         {
             InitializeLoadData();
-            GameManager.Instance.SetCurrentLevelIndex(_allGameData.CurrentLevelIndex);
+            LevelManager.Instance.SetCurrentLevel(_allGameData.CurrentLevelIndex);
             EconomyManager.Instance.SetMeatProductionRate(_allGameData.PlayerData.CurrentMeatProductionRate);
             EconomyManager.Instance.SetMeatProductionRateCost(_allGameData.PlayerData.CurrentMeatProductionRateCost);
             GoldManager.Instance.SetGoldAmount(_allGameData.PlayerData.GoldCount);
@@ -35,7 +35,7 @@ namespace SaveSystem
             _allGameData ??= new AllGameData();
             _allGameData.PlayerData ??= new PlayerData();
             
-            _allGameData.CurrentLevelIndex = GameManager.Instance.GetCurrentLevelIndex();
+            _allGameData.CurrentLevelIndex = LevelManager.Instance.GetCurrentLevelIndex();
             _allGameData.PlayerData.CurrentMeatProductionRate = EconomyManager.Instance.GetCurrentMeatProductionRate();
             _allGameData.PlayerData.CurrentMeatProductionRateCost = EconomyManager.Instance.GetMeatProductionRateCost();
             _allGameData.PlayerData.GoldCount = GoldManager.Instance.GetGoldAmount();
