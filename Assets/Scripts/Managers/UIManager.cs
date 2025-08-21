@@ -88,7 +88,6 @@ namespace Managers
         
         #endregion
 
-
         #region Helper Methods
 
         private void OnGameStateChanged(GameState gameState)

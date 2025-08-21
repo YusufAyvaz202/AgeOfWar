@@ -27,7 +27,7 @@ namespace Abstracts
         [SerializeField] protected LayerMask _layerMask;
         protected FighterState _fighterState;
         private NavMeshAgent _navMeshAgent;
-        public Transform _targetDestination;
+        private Transform _targetDestination;
 
         [Header("Game Settings")]
         [SerializeField] private bool _isPlayerFighter;

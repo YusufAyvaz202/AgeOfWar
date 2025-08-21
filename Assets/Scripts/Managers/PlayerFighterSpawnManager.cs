@@ -59,8 +59,7 @@ namespace Managers
             
             if (EconomyManager.Instance.CanSpawn(Const.FighterCosts.CAVEMAN_COST))
             {
-                BaseFighter baseFighter = _fighterPool.GetFighter(FighterType.CaveMan);
-                baseFighter.transform.position = _spawnPosition.position;
+                SpawnFighter(FighterType.CaveMan);
             }
         }
         
@@ -69,9 +68,14 @@ namespace Managers
             if (!_isPlaying) return;
             if (EconomyManager.Instance.CanSpawn(Const.FighterCosts.NINJA_COST))
             {
-                BaseFighter baseFighter = _fighterPool.GetFighter(FighterType.Ninja);
-                baseFighter.transform.position = _spawnPosition.position;
+                SpawnFighter(FighterType.Ninja);
             }
+        }
+
+        private void SpawnFighter(FighterType fighterType)
+        {
+            BaseFighter baseFighter = _fighterPool.GetFighter(fighterType);
+            baseFighter.transform.position = _spawnPosition.position;
         }
 
         #region Helper Methods

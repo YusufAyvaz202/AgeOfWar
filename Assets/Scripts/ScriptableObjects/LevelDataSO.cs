@@ -9,14 +9,14 @@ namespace ScriptableObjects
     {
        public int LevelId;
        public float TimeBetweenEachFighter;
-       public List<Wawe> Waves = new();
+       public List<Wave> Waves = new();
     }
 
     [System.Serializable]
-    public class Wawe
+    public class Wave
     {
        public List<Unit> Units = new();
-       public float SpawnDelayBetweenWawe;
+       public float SpawnDelayBetweenWave;
     }
 
     [System.Serializable]
