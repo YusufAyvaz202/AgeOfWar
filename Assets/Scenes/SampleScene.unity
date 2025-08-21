@@ -2029,7 +2029,6 @@ MonoBehaviour:
   - {fileID: 544307509177008620, guid: 930dfe4864286664fb2d04c48a67504a, type: 3}
   - {fileID: 9199851473116995868, guid: b90bd876bc5f05a44ae18ae2cedc30b0, type: 3}
   _currentLevelData: {fileID: 11400000, guid: 2254e24642f2cea4d968dedb8dcc954c, type: 2}
-  _target: {fileID: 2023758044}
   _spawnPosition: {fileID: 996725902}
   _spawnParent: {fileID: 981292238}
 --- !u!4 &782638912
@@ -2821,9 +2820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80a6c98ed4f5b74eb836d83aa5e37b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meatCount: 0
-  _meatProductionPerTime: 5
-  _meatProductionPerTimeCost: 0
 --- !u!114 &914245972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3117,8 +3113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cec6d5878ef44a0be39662383335aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 12
-  _isPlayerCastle: 1
+  _baseHealth: 12
+  _isPlayerCastle: 0
 --- !u!61 &996725905
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3386,7 +3382,6 @@ MonoBehaviour:
   _baseFighterPrefabs:
   - {fileID: 544307509177008620, guid: 62f12431d2203b24cb5aa9fc6028cc1f, type: 3}
   - {fileID: 9199851473116995868, guid: c9c61bec9e1a4ca46820e2d38832af09, type: 3}
-  _target: {fileID: 996725902}
   _spawnPosition: {fileID: 2023758044}
   _spawnParent: {fileID: 985277634}
 --- !u!1 &1100781482
@@ -5019,7 +5014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cec6d5878ef44a0be39662383335aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 12
+  _baseHealth: 12
   _isPlayerCastle: 1
 --- !u!1 &2083665463
 GameObject:

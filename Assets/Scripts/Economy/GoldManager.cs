@@ -1,6 +1,7 @@
 ﻿using System;
 using Abstracts;
 using Managers;
+using Misc;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +16,9 @@ namespace Economy
         private int _goldAmount;
         private float _minimumGoldAmount = 1f;
         private float _maximumGoldAmount = 3f;
+        
+        [Header("Settings")]
+        private bool _isPlaying;
 
         #region Unity Methods
 
@@ -32,11 +36,13 @@ namespace Economy
 
         private void OnEnable()
         {
+            EventManager.OnGameStateChanged += OnGameStateChanged;
             EventManager.OnEnemyFighterDead += IncreaseGoldAmount;
         }
 
         private void OnDisable()
         {
+            EventManager.OnGameStateChanged -= OnGameStateChanged;
             EventManager.OnEnemyFighterDead -= IncreaseGoldAmount;
         }
 
@@ -44,6 +50,7 @@ namespace Economy
         
         private void IncreaseGoldAmount(BaseFighter fighter)
         {
+            if (!_isPlaying) return;
             _goldAmount += Convert.ToInt32(Random.Range(_minimumGoldAmount, _maximumGoldAmount));
             UIManager.Instance.UpdateGoldCountText(_goldAmount);
         }
@@ -70,6 +77,11 @@ namespace Economy
                 return true;
             }
             return false;
+        }
+        
+        private void OnGameStateChanged(GameState gameState)
+        {
+            _isPlaying = gameState == GameState.Playing;
         }
 
         #endregion

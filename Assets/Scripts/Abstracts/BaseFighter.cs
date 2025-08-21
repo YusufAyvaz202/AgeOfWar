@@ -140,7 +140,6 @@ namespace Abstracts
         {
             _fighterState = fighterState;
             _fighterAnimationController.SetAnimationState(_fighterState);
-            Debug.Log(fighterState.ToString());
         }
 
         public void SetTargetDestination(Transform target)
@@ -186,29 +185,19 @@ namespace Abstracts
                     _navMeshAgent.isStopped = true;
                 }
             }
+            else
+            {
+                _isPlaying = false;
+                if (gameObject.activeInHierarchy)
+                {
+                    _navMeshAgent.isStopped = true;
+                }
+            }
         }
 
         public FighterType GetFighterType()
         {
             return _fighterType;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Vector3 origin = transform.position;
-            Vector3 direction = transform.right;
-            float distance = _attackRange;
-
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(origin, origin + direction * distance);
-
-            if (hit.collider != null)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawSphere(hit.point, 0.05f);
-            }
         }
 
         #endregion
