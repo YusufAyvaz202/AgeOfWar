@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Managers;
 using Misc;
@@ -16,10 +15,10 @@ namespace Economy
         private float _meatProductionRate;
         private int _meatProductionRateCost = 2;
         private float _meatProductionRateIncreaseRate = 0.2f;
-        private float _meatProductionRateIncreaseCostRate = 1.5f;
         private bool _isProductionContinue;
         
         [Header("Other Settings")]
+        [SerializeField] private AnimationCurve MeatProductionRateCurve;
         private Coroutine _productionCoroutine;
 
         #region Unity Methods
@@ -83,6 +82,8 @@ namespace Economy
         {
             _meatProductionRate = production;
             UIManager.Instance.UpdateMeatProductionRateText(_meatProductionRate);
+            
+            SetMeatProductionRateCost();
         }
         
         public void IncreaseMeatProductionRate()
@@ -90,7 +91,7 @@ namespace Economy
             _meatProductionRate += _meatProductionRateIncreaseRate;
             UIManager.Instance.UpdateMeatProductionRateText(_meatProductionRate);
             
-            IncreaseMeatProductionRateCost();
+            SetMeatProductionRateCost();
         }
 
         public int GetMeatProductionRateCost()
@@ -98,15 +99,9 @@ namespace Economy
             return _meatProductionRateCost;
         }
 
-        public void SetMeatProductionRateCost(int cost)
+        private void SetMeatProductionRateCost()
         {
-            _meatProductionRateCost = cost;
-            UIManager.Instance.UpdateIncreaseMeatProductionRateText(_meatProductionRateCost);
-        }
-
-        private void IncreaseMeatProductionRateCost()
-        {
-            _meatProductionRateCost = (int)MathF.Ceiling(_meatProductionRateCost * _meatProductionRateIncreaseCostRate);
+            _meatProductionRateCost = (int)MeatProductionRateCurve.Evaluate(_meatProductionRate);
             UIManager.Instance.UpdateIncreaseMeatProductionRateText(_meatProductionRateCost);
         }
         

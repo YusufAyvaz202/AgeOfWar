@@ -19,7 +19,7 @@ MonoBehaviour:
     - FighterType: 1
       UnitSpawnCount: 1
       TimeBetweenEachUnits: 2
-    - FighterType: 1
-      UnitSpawnCount: 2
+    - FighterType: 0
+      UnitSpawnCount: 1
       TimeBetweenEachUnits: 0
-    SpawnDelayBetweenWawe: 5
+    SpawnDelayBetweenWave: 0

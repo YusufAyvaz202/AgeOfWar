@@ -17,7 +17,6 @@ namespace SaveSystem
             InitializeLoadData();
             LevelManager.Instance.SetCurrentLevel(_allGameData.CurrentLevelIndex);
             EconomyManager.Instance.SetMeatProductionRate(_allGameData.PlayerData.CurrentMeatProductionRate);
-            EconomyManager.Instance.SetMeatProductionRateCost(_allGameData.PlayerData.CurrentMeatProductionRateCost);
             GoldManager.Instance.SetGoldAmount(_allGameData.PlayerData.GoldCount);
         }
 
@@ -37,7 +36,6 @@ namespace SaveSystem
             
             _allGameData.CurrentLevelIndex = LevelManager.Instance.GetCurrentLevelIndex();
             _allGameData.PlayerData.CurrentMeatProductionRate = EconomyManager.Instance.GetCurrentMeatProductionRate();
-            _allGameData.PlayerData.CurrentMeatProductionRateCost = EconomyManager.Instance.GetMeatProductionRateCost();
             _allGameData.PlayerData.GoldCount = GoldManager.Instance.GetGoldAmount();
             SaveAllGameData(_allGameData);
         }
@@ -70,5 +68,6 @@ namespace SaveSystem
             Debug.LogWarning("Save file not found at: " + path);
             return new AllGameData();
         }
+        
     }
 }

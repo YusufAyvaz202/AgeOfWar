@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace SaveSystem
 {
@@ -6,7 +7,6 @@ namespace SaveSystem
     public class PlayerData
     {
         public float CurrentMeatProductionRate;
-        public int CurrentMeatProductionRateCost;
         public int GoldCount;
     }
 }
